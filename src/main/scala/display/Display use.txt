@@ -1,0 +1,14 @@
+Display use
+
+input:
+connect price to io.sw(4,0)
+connect sum to io.sw(14,8)
+
+sw:
+0 XXXXXXX 000 XXXXX
+ |  sum  |   |price|
+
+
+output:
+io.seg
+io.an
