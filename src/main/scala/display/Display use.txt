@@ -1,6 +1,13 @@
 Display use
+tal i paranteser er bit-længde
 
-input:
+
+Display.scala:
+in:
+sw (16)
+out:
+seg (7)
+an (4)
 connect price to io.sw(4,0)
 connect sum to io.sw(14,8)
 
@@ -9,6 +16,27 @@ sw:
  |  sum  |   |price|
 
 
-output:
-io.seg
-io.an
+DisplayMultiplexer.scala:
+Styrer, hvilken af de 4 7-segment displays, der lyser
+in:
+sum (7)
+price (5)
+out:
+seg (7)
+an (4)
+
+
+SevenSegDec.scala
+Konverterer til 7-segment display bit-string
+in:
+in (4)
+out:
+out (7)
+
+
+BCDTable
+Konverterer bit-string til BCD-string
+in:
+switchin (8)
+out:
+BCDn (8)
