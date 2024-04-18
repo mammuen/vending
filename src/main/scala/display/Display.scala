@@ -2,9 +2,9 @@ import chisel3._
 import chisel3.util._
 
 /**
-  * This is the top level to develop the display multiplexing circuit.
-  * The multiplexing circuit is in the DisplayMultiplexer.
-  */
+ * This is the top level to develop the display multiplexing circuit.
+ * The multiplexing circuit is in the DisplayMultiplexer.
+ */
 class Display(maxCount: Int) extends Module {
   val io = IO(new Bundle {
     val sw = Input(UInt(16.W))
@@ -15,8 +15,12 @@ class Display(maxCount: Int) extends Module {
   val dispMux = Module(new DisplayMultiplexer(maxCount))
 
   // Simulate the price and sum input with the switches
-  dispMux.io.price := io.sw(7, 0)
-  dispMux.io.sum := io.sw(15, 8)
+  dispMux.io.price := io.sw(4, 0)
+  when(io.sw(14, 8) > 99.U){
+    dispMux.io.sum := 0x63.U
+  } .otherwise {
+    dispMux.io.sum := io.sw(14, 8)
+  }
 
   // Connect the display
   io.seg := dispMux.io.seg
