@@ -7,19 +7,23 @@ import chisel3.util._
  */
 class Display(maxCount: Int) extends Module {
   val io = IO(new Bundle {
-    val sw = Input(UInt(16.W))
+    //val sw = Input(UInt(16.W))
+    val price = Input(UInt(5.W))
+    val sum = Input(UInt(7.W))
+    val cans = Input(UInt(8.W))
     val seg = Output(UInt(7.W))
     val an = Output(UInt(4.W))
   })
 
   val dispMux = Module(new DisplayMultiplexer(maxCount))
+  dispMux.io.cans := io.cans
 
   // Simulate the price and sum input with the switches
-  dispMux.io.price := io.sw(4, 0)
-  when(io.sw(14, 8) > 99.U){
+  dispMux.io.price := io.price(4, 0)
+  when(io.sum > 99.U){
     dispMux.io.sum := 0x63.U
   } .otherwise {
-    dispMux.io.sum := io.sw(14, 8)
+    dispMux.io.sum := io.sum
   }
 
   // Connect the display

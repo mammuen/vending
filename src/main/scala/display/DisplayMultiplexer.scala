@@ -5,6 +5,7 @@ class DisplayMultiplexer(maxCount: Int) extends Module {
   val io = IO(new Bundle {
     val sum = Input(UInt(7.W))
     val price = Input(UInt(5.W))
+    val cans = Input(UInt(8.W))
     val seg = Output(UInt(7.W))
     val an = Output(UInt(4.W))
   })
@@ -41,11 +42,20 @@ class DisplayMultiplexer(maxCount: Int) extends Module {
 
   sevSeg := sevDis.io.out
 
-  switch(selectReg){
-    is("b0001".U){sevDis.io.in := BCDPrice.io.BCDn(3,0)}
-    is("b0010".U){sevDis.io.in := BCDPrice.io.BCDn(7,4)}
-    is("b0100".U){sevDis.io.in := BCDSum.io.BCDn(3,0)}
-    is("b1000".U){sevDis.io.in := BCDSum.io.BCDn(7,4)}
+  when(io.cans <= 0.U){
+    switch(selectReg){
+      is("b0001".U){sevDis.io.in := "b1010".U}
+      is("b0010".U){sevDis.io.in := "b1011".U}
+      is("b0100".U){sevDis.io.in := "b1100".U}
+      is("b1000".U){sevDis.io.in := "b1101".U}
+    }
+  } .otherwise {
+    switch(selectReg) {
+      is("b0001".U) {sevDis.io.in := BCDPrice.io.BCDn(3, 0)}
+      is("b0010".U) {sevDis.io.in := BCDPrice.io.BCDn(7, 4)}
+      is("b0100".U) {sevDis.io.in := BCDSum.io.BCDn(3, 0)}
+      is("b1000".U) {sevDis.io.in := BCDSum.io.BCDn(7, 4)}
+    }
   }
 
   // *** your code ends here
