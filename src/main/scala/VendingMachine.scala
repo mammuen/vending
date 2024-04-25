@@ -15,39 +15,108 @@ class VendingMachine(maxCount: Int) extends Module {
 
   val sevSeg = WireDefault(0.U)
 
-  val sum = RegInit(0.U(5.W))
-  val price = RegInit(0.U(5.W))
-
-  val tickCounterReg = RegInit(0.U(32.W))
-  val tick = tickCounterReg === 4.U
-
-  tickCounterReg := tickCounterReg + 1.U
-  when (tick) {
-    tickCounterReg := 0.U
-  }
-
-
-
-  when (io.buy && (gt || eq)) {
-    io.releaseCan = true.B
-  } .otherwise {
-    io.alarm = true.B
-  }
-
   // ***** some dummy connections *****
-  sevSeg := "b1111111".U
 
-  io.alarm := io.coin2
-  io.releaseCan := io.coin5
+  val cnt = RegInit(0.U(20.W))
+  cnt := cnt + 1.U
+  when(cnt === 100000.U){ // should be 100000
+    cnt := 0.U
+  }
+  val canReg = RegInit(0.U(1.W))
+  val alarmReg = RegInit(0.U(1.W))
+  canReg := canReg
+  alarmReg := alarmReg
+  io.releaseCan := canReg
+  io.alarm := alarmReg
+
+  val sum = RegInit(0.U(7.W))
+
+  sum := sum
+
+  val Display = Module(new Display(1))
+
+  object State extends ChiselEnum {
+    // The three states
+    val wait1, add2 , add5, wait2, enough, not_enough = Value
+  }
+  import State._
+
+  // The state register
+  val stateReg = RegInit (wait1)
+  // Next state logic
+  switch ( stateReg ) {
+
+    is(wait1){
 
 
-  io.seg := ~sevSeg
-  io.an := "b1110".U
+      when(io.coin2){
+        stateReg:= add2
+      } .elsewhen(io.coin5) {
+        stateReg:= add5
+      } .elsewhen(io.buy) {
+
+        when(sum >= io.price)
+        {
+        stateReg := enough
+        } .otherwise
+        {
+          stateReg:= not_enough
+        }
+
+      } .otherwise{
+      stateReg := wait1
+      }
+    }
+
+    is(add2){
+      sum := sum + 2.U
+      stateReg := wait2
+    }
+    is(add5){
+      sum := sum + 5.U
+      stateReg := wait2
+    }
+    is(wait2){
+      when( !io.coin2 && !io.coin5 && !io.buy && !io.buy){
+        stateReg := wait1
+        canReg := 0.U
+        alarmReg := 0.U
+      }
+    }
+    is(enough){
+      when(io.buy){
+        io.releaseCan := 1.U
+      } .otherwise {
+        //canReg := 1.U
+        sum := sum - io.price
+        stateReg := wait2
+      }
+    }
+    is(not_enough){
+      when(io.buy){
+        io.alarm := 1.U
+      } .otherwise{
+        stateReg := wait2
+    }
+    }
+
+  }
+
+
+
+  when(sum > 99.U){
+    sum := 99.U
+  }
+
+  Display.io.price := io.price
+  Display.io.sum := sum
+
+  io.seg := Display.io.seg
+  io.an := Display.io.an
 }
 
 // generate Verilog
 object VendingMachine extends App {
   (new chisel3.stage.ChiselStage).emitVerilog(new VendingMachine(100000))
 }
-
 
