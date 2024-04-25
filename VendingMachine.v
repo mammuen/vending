@@ -176,14 +176,14 @@ module DisplayMultiplexer(
   always @(posedge clock) begin
     if (reset) begin // @[DisplayMultiplexer.scala 25:24]
       reg100k <= 20'h0; // @[DisplayMultiplexer.scala 25:24]
-    end else if (reg100k == 20'ha) begin // @[DisplayMultiplexer.scala 32:25]
+    end else if (reg100k == 20'h186a0) begin // @[DisplayMultiplexer.scala 32:29]
       reg100k <= 20'h0; // @[DisplayMultiplexer.scala 33:13]
     end else begin
       reg100k <= _reg100k_T_1; // @[DisplayMultiplexer.scala 30:11]
     end
     if (reset) begin // @[DisplayMultiplexer.scala 26:26]
       selectReg <= 4'h8; // @[DisplayMultiplexer.scala 26:26]
-    end else if (reg100k == 20'ha) begin // @[DisplayMultiplexer.scala 32:25]
+    end else if (reg100k == 20'h186a0) begin // @[DisplayMultiplexer.scala 32:29]
       if (selectReg == 4'h1) begin // @[DisplayMultiplexer.scala 35:34]
         selectReg <= 4'h8; // @[DisplayMultiplexer.scala 36:17]
       end else begin
