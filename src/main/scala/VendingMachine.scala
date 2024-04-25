@@ -15,6 +15,8 @@ class VendingMachine(maxCount: Int) extends Module {
 
   val sevSeg = WireDefault(0.U)
 
+  val cans = RegInit(20.U)
+
   // ***** some dummy connections *****
 
   val cnt = RegInit(0.U(20.W))
@@ -57,14 +59,14 @@ class VendingMachine(maxCount: Int) extends Module {
 
         when(sum >= io.price)
         {
-        stateReg := enough
+          stateReg := enough
         } .otherwise
         {
           stateReg:= not_enough
         }
 
       } .otherwise{
-      stateReg := wait1
+        stateReg := wait1
       }
     }
 
@@ -89,6 +91,7 @@ class VendingMachine(maxCount: Int) extends Module {
       } .otherwise {
         //canReg := 1.U
         sum := sum - io.price
+        cans := cans - 1.U
         stateReg := wait2
       }
     }
@@ -97,7 +100,7 @@ class VendingMachine(maxCount: Int) extends Module {
         io.alarm := 1.U
       } .otherwise{
         stateReg := wait2
-    }
+      }
     }
 
   }
@@ -110,6 +113,7 @@ class VendingMachine(maxCount: Int) extends Module {
 
   Display.io.price := io.price
   Display.io.sum := sum
+  Display.io.cans := cans
 
   io.seg := Display.io.seg
   io.an := Display.io.an
@@ -119,4 +123,3 @@ class VendingMachine(maxCount: Int) extends Module {
 object VendingMachine extends App {
   (new chisel3.stage.ChiselStage).emitVerilog(new VendingMachine(100000))
 }
-
