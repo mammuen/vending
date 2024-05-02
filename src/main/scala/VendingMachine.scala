@@ -12,21 +12,36 @@ class VendingMachine(maxCount: Int) extends Module {
     val seg = Output(UInt(7.W))
     val an = Output(UInt(4.W))
     val btn = Input(Bool())
+    val ledcan = Output(UInt(10.W))
   })
 
   val sevSeg = WireDefault(0.U)
 
-  val cans = RegInit(20.U)
+  val cans = RegInit(10.U)
 
   // ***** some dummy connections *****
 
-/*
-  val cnt = RegInit(0.U(20.W))
-  cnt := cnt + 1.U
-  when(cnt === 100000.U){ // should be 100000
-    cnt := 0.U
+  val table = Wire( Vec(11 , UInt (10.W)) )
+
+  /*
+  for (i <- 1 until 10) {
+    table(i) := (2^i-1).U
   }
-*/
+  */
+  table(0) := 0.U
+  table(1) := 1.U
+  table(2) := 3.U
+  table(3) := 7.U
+  table(4) := 15.U
+  table(5) := 31.U
+  table(6) := 63.U
+  table(7) := 127.U
+  table(8) := 255.U
+  table(9) := 511.U
+  table(10) := 1023.U
+
+
+  io.ledcan := table(cans)
 
   val canReg = RegInit(0.U(1.W))
   val alarmReg = RegInit(0.U(1.W))
@@ -111,13 +126,15 @@ class VendingMachine(maxCount: Int) extends Module {
     is(empty){
       cans := 0.U
       when(io.btn){
-        cans := 20.U
+        cans := 10.U
         stateReg := wait1
       }
 
     }
 
   }
+
+
 
 
 
