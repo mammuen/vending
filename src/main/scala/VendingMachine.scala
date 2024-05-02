@@ -107,6 +107,10 @@ class VendingMachine(maxCount: Int) extends Module {
 
 
 
+  when(cans < 0.U){
+    cans := 0.U
+  }
+
   when(sum > 99.U){
     sum := 99.U
   }
