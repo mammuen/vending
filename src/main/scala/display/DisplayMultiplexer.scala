@@ -29,7 +29,7 @@ class DisplayMultiplexer(maxCount: Int) extends Module {
 
   reg100k := reg100k + 1.U
 
-  when(reg100k === 10.U){ //skal være 100000, men er ændret for test
+  when(reg100k === 100000.U){ //skal være 100000, men er ændret for test
     reg100k := 0.U
 
     when(selectReg === "b0001".U){
@@ -44,10 +44,10 @@ class DisplayMultiplexer(maxCount: Int) extends Module {
 
   when(io.cans <= 0.U){
     switch(selectReg){
-      is("b0001".U){sevDis.io.in := "b1010".U}
-      is("b0010".U){sevDis.io.in := "b1011".U}
-      is("b0100".U){sevDis.io.in := "b1100".U}
-      is("b1000".U){sevDis.io.in := "b1101".U}
+      is("b0001".U){sevDis.io.in := "b1101".U}
+      is("b0010".U){sevDis.io.in := "b1100".U}
+      is("b0100".U){sevDis.io.in := "b1011".U}
+      is("b1000".U){sevDis.io.in := "b1010".U}
     }
   } .otherwise {
     switch(selectReg) {
