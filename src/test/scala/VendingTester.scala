@@ -21,6 +21,143 @@ class VendingTester extends AnyFlatSpec with ChiselScalatestTester {
       dut.clock.step(3)
       dut.io.buy.poke(false.B)
       dut.clock.step(10)
+
+      dut.io.price.poke(1.U)
+      dut.clock.step(3)
+      dut.io.coin5.poke(true.B)
+      dut.clock.step(3)
+      dut.io.coin5.poke(false.B)
+      dut.clock.step(3)
+      dut.io.coin5.poke(true.B)
+      dut.clock.step(3)
+      dut.io.coin5.poke(false.B)
+      dut.clock.step(3)
+      dut.io.coin5.poke(true.B)
+      dut.clock.step(3)
+      dut.io.coin5.poke(false.B)
+      dut.clock.step(3)
+      dut.io.coin5.poke(true.B)
+      dut.clock.step(3)
+      dut.io.coin5.poke(false.B)
+      dut.clock.step(3)
+      dut.io.coin5.poke(true.B)
+      dut.clock.step(3)
+      dut.io.coin5.poke(false.B)
+      dut.clock.step(3)
+
+
+      dut.io.buy.poke(true.B)
+      dut.clock.step(3)
+      dut.io.buy.poke(false.B)
+      dut.clock.step(3)
+
+      dut.io.buy.poke(true.B)
+      dut.clock.step(3)
+      dut.io.buy.poke(false.B)
+      dut.clock.step(3)
+
+      dut.io.buy.poke(true.B)
+      dut.clock.step(3)
+      dut.io.buy.poke(false.B)
+      dut.clock.step(3)
+
+      dut.io.buy.poke(true.B)
+      dut.clock.step(3)
+      dut.io.buy.poke(false.B)
+      dut.clock.step(3)
+
+      dut.io.buy.poke(true.B)
+      dut.clock.step(3)
+      dut.io.buy.poke(false.B)
+      dut.clock.step(3)
+
+      dut.io.buy.poke(true.B)
+      dut.clock.step(3)
+      dut.io.buy.poke(false.B)
+      dut.clock.step(3)
+
+      dut.io.buy.poke(true.B)
+      dut.clock.step(3)
+      dut.io.buy.poke(false.B)
+      dut.clock.step(3)
+
+      dut.io.buy.poke(true.B)
+      dut.clock.step(3)
+      dut.io.buy.poke(false.B)
+      dut.clock.step(3)
+
+      dut.io.buy.poke(true.B)
+      dut.clock.step(3)
+      dut.io.buy.poke(false.B)
+      dut.clock.step(3)
+
+      dut.io.buy.poke(true.B)
+      dut.clock.step(3)
+      dut.io.buy.poke(false.B)
+      dut.clock.step(3)
+
+      dut.io.buy.poke(true.B)
+      dut.clock.step(3)
+      dut.io.buy.poke(false.B)
+      dut.clock.step(3)
+
+      dut.io.buy.poke(true.B)
+      dut.clock.step(3)
+      dut.io.buy.poke(false.B)
+      dut.clock.step(3)
+
+
+      dut.io.buy.poke(true.B)
+      dut.clock.step(3)
+      dut.io.buy.poke(false.B)
+      dut.clock.step(3)
+
+      dut.io.buy.poke(true.B)
+      dut.clock.step(3)
+      dut.io.buy.poke(false.B)
+      dut.clock.step(3)
+
+      dut.io.buy.poke(true.B)
+      dut.clock.step(3)
+      dut.io.buy.poke(false.B)
+      dut.clock.step(3)
+
+      dut.io.buy.poke(true.B)
+      dut.clock.step(3)
+      dut.io.buy.poke(false.B)
+      dut.clock.step(3)
+
+      dut.io.buy.poke(true.B)
+      dut.clock.step(3)
+      dut.io.buy.poke(false.B)
+      dut.clock.step(3)
+
+      dut.io.buy.poke(true.B)
+      dut.clock.step(3)
+      dut.io.buy.poke(false.B)
+      dut.clock.step(3)
+
+      dut.io.buy.poke(true.B)
+      dut.clock.step(3)
+      dut.io.buy.poke(false.B)
+      dut.clock.step(3)
+
+      dut.io.buy.poke(true.B)
+      dut.clock.step(3)
+      dut.io.buy.poke(false.B)
+      dut.clock.step(3)
+
+      dut.io.buy.poke(true.B)
+      dut.clock.step(3)
+      dut.io.buy.poke(false.B)
+      dut.clock.step(3)
+
+
+
+
+
+
+
     }
   }
 }
