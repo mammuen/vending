@@ -20,7 +20,7 @@ class VendingMachine(maxCount: Int) extends Module {
 
   val table = Wire(Vec (11, UInt (10.W)))
   table(0) := 0.U
-  for (i <- 0 until 11) {
+  for (i <- 1 until 11) {
     table(i) := ((1<<i)-1).U
 
   }
