@@ -16,31 +16,14 @@ class VendingMachine(maxCount: Int) extends Module {
   })
 
   val sevSeg = WireDefault(0.U)
-
   val cans = RegInit(10.U)
 
-  // ***** some dummy connections *****
-
-  val table = Wire( Vec(11 , UInt (10.W)) )
-
-  /*
-  for (i <- 1 until 10) {
-    table(i) := (2^i-1).U
-  }
-  */
+  val table = Wire(Vec (11, UInt (10.W)))
   table(0) := 0.U
-  table(1) := 1.U
-  table(2) := 3.U
-  table(3) := 7.U
-  table(4) := 15.U
-  table(5) := 31.U
-  table(6) := 63.U
-  table(7) := 127.U
-  table(8) := 255.U
-  table(9) := 511.U
-  table(10) := 1023.U
+  for (i <- 0 until 11) {
+    table(i) := ((1<<i)-1).U
 
-
+  }
   io.ledcan := table(cans)
 
   val canReg = RegInit(0.U(1.W))
@@ -74,8 +57,9 @@ class VendingMachine(maxCount: Int) extends Module {
         stateReg:= add2
       } .elsewhen(io.coin5) {
         stateReg:= add5
-      } .elsewhen(io.buy) {
-
+      }.elsewhen(cans === 0.U) {
+        stateReg := empty
+      }.elsewhen(io.buy) {
         when(sum >= io.price)
         {
           stateReg := enough
@@ -107,10 +91,7 @@ class VendingMachine(maxCount: Int) extends Module {
     is(enough){
       when(io.buy){
         io.releaseCan := 1.U
-      } .elsewhen(cans === 0.U){
-        stateReg := empty
       } .otherwise{
-        //canReg := 1.U
         sum := sum - io.price
         cans := cans - 1.U
         stateReg := wait2
@@ -133,13 +114,6 @@ class VendingMachine(maxCount: Int) extends Module {
     }
 
   }
-
-
-
-
-
-
-
 
   when(sum > 99.U){
     sum := 99.U
