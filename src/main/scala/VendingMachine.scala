@@ -11,6 +11,7 @@ class VendingMachine(maxCount: Int) extends Module {
     val alarm = Output(Bool())
     val seg = Output(UInt(7.W))
     val an = Output(UInt(4.W))
+    val btn = Input(Bool())
   })
 
   val sevSeg = WireDefault(0.U)
@@ -19,11 +20,14 @@ class VendingMachine(maxCount: Int) extends Module {
 
   // ***** some dummy connections *****
 
+/*
   val cnt = RegInit(0.U(20.W))
   cnt := cnt + 1.U
   when(cnt === 100000.U){ // should be 100000
     cnt := 0.U
   }
+*/
+
   val canReg = RegInit(0.U(1.W))
   val alarmReg = RegInit(0.U(1.W))
   canReg := canReg
@@ -39,7 +43,7 @@ class VendingMachine(maxCount: Int) extends Module {
 
   object State extends ChiselEnum {
     // The three states
-    val wait1, add2 , add5, wait2, enough, not_enough = Value
+    val wait1, add2 , add5, wait2, enough, not_enough, empty = Value
   }
   import State._
 
@@ -88,7 +92,9 @@ class VendingMachine(maxCount: Int) extends Module {
     is(enough){
       when(io.buy){
         io.releaseCan := 1.U
-      } .otherwise {
+      } .elsewhen(cans === 0.U){
+        stateReg := empty
+      } .otherwise{
         //canReg := 1.U
         sum := sum - io.price
         cans := cans - 1.U
@@ -102,8 +108,19 @@ class VendingMachine(maxCount: Int) extends Module {
         stateReg := wait2
       }
     }
+    is(empty){
+      cans := 0.U
+      when(io.btn){
+        cans := 20.U
+        stateReg := wait1
+      }
+
+    }
 
   }
+
+
+
 
 
 
