@@ -42,7 +42,7 @@ class DisplayMultiplexer(maxCount: Int) extends Module {
 
   sevSeg := sevDis.io.out
 
-  when(io.cans <= 0.U){
+  when(io.cans === 0.U){
     switch(selectReg){
       is("b0001".U){sevDis.io.in := "b1101".U}
       is("b0010".U){sevDis.io.in := "b1100".U}
